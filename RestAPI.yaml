@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Payment Service API
+  version: 1.0.0
+  description: API for making a payment for a movie reservation.
+
+paths:
+  /reservations/{reservationId}/payment:
+    post:
+      summary: Make payment for the reservation
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+            type: string
+          description: The ID of the reservation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paymentDetails:
+                  type: object
+                  properties:
+                    cardNumber:
+                      type: string
+                      description: The card number for payment.
+                    expiryDate:
+                      type: string
+                      description: The expiration date of the card.
+                    cvv:
+                      type: string
+                      description: The CVV code of the card.
+      responses:
+        '200':
+          description: Payment successfully processed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookingId:
+                    type: string
+                    description: The ID of the confirmed booking.
+                  eTicket:
+                    type: string
+                    description: The e-ticket for the booking.
+        '400':
+          description: Payment failed or invalid details provided.
+        '404':
+          description: Reservation not found.
+
+components:
+  schemas:
+    PaymentDetails:
+      type: object
+      properties:
+        cardNumber:
+          type: string
+          description: The card number for payment.
+        expiryDate:
+          type: string
+          description: The expiration date of the card.
+        cvv:
+          type: string
+          description: The CVV code of the card.
